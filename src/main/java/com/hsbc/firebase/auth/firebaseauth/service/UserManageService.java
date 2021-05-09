@@ -33,6 +33,8 @@ import com.google.firebase.auth.UserRecord.UpdateRequest;
 import com.google.firebase.auth.hash.HmacSha256;
 import com.google.firebase.auth.hash.Pbkdf2Sha256;
 import com.google.firebase.auth.hash.PbkdfSha1;
+import com.hsbc.firebase.auth.firebaseauth.model.SignInInfo;
+import com.hsbc.firebase.auth.firebaseauth.model.SignInResponse;
 
 @Service
 public class UserManageService {
@@ -76,31 +78,23 @@ public class UserManageService {
 	}
 	
 	
-	public UserRecord callSignInWithEmailAndPassword(String email,String password) {
+	public SignInResponse callSignInWithEmailAndPassword(SignInInfo signInInfo) {
 		String strUrl ="https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDYc29R_1LabV6B_boVPvbAHLEYB48DvQY";
 		//URL url = new URL (strUrl);
 		RestTemplate restTemplate = new RestTemplate();
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		
-		// request body parameters
-		Map<String,Object> hm = new LinkedHashMap<>();
-		
-		hm.put("email", email);
-		hm.put("password", password);
-		hm.put("returnSecureToken", true);
-		
-		JSONObject hm1 = new JSONObject(hm);
 		
 		// build the request
-		HttpEntity<JSONObject> request = new HttpEntity<>(hm1, headers);
+		HttpEntity<SignInInfo> request = new HttpEntity<>(signInInfo, headers);
 		
 		
 		System.out.println("request::"+ request);
 		
-		ResponseEntity<UserRecord> responseEntity = restTemplate.postForEntity(strUrl, request, UserRecord.class);
+		ResponseEntity<SignInResponse> responseEntity = restTemplate.postForEntity(strUrl, request, SignInResponse.class);
 		
-		//restTemplate.postForEntity(url, request,  UserRecord.class)
+		
 		
 		// check response
 		if (responseEntity.getStatusCode() == HttpStatus.CREATED) {
@@ -110,22 +104,13 @@ public class UserManageService {
 		    System.out.println("Request Failed");
 		    System.out.println(responseEntity.getStatusCode());
 		}
-		
-		
-		UserRecord userRecord = responseEntity.getBody();
-		return userRecord;
+		return responseEntity.getBody();
 	}
 	
 	
 	public void importUsersWithoutPassword() {
 		try {
-			/*
-			 * List<ImportUserRecord> users =
-			 * Collections.singletonList(ImportUserRecord.builder()
-			 * .setUid("amitwitoutpwd1") .setDisplayName("Amit Witout pwd")
-			 * .setEmail("amitwitoutpwd1@gmail.com") .setEmailVerified(true)
-			 * .setPhoneNumber("+11234567890") .build());
-			 */
+			
 			 List<ImportUserRecord> users = new ArrayList<>();
 			  
 			  ImportUserRecord  ImportUserRecord1 = ImportUserRecord.builder().setUid("amitwitoutpwd2")

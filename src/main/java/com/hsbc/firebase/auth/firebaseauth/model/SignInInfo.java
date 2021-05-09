@@ -8,6 +8,7 @@ public class SignInInfo {
 	
 	private String email;
 	private String password;
+	private boolean returnSecureToken;
 	
 	public String getEmail() {
 		return email;
@@ -20,6 +21,13 @@ public class SignInInfo {
 	}
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	
+	public boolean isReturnSecureToken() {
+		return returnSecureToken;
+	}
+	public void setReturnSecureToken(boolean returnSecureToken) {
+		this.returnSecureToken = returnSecureToken;
 	}
 	
 	

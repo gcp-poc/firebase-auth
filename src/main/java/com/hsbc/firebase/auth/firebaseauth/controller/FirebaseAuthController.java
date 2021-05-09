@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.google.firebase.auth.UserRecord;
 import com.hsbc.firebase.auth.firebaseauth.model.SignInInfo;
+import com.hsbc.firebase.auth.firebaseauth.model.SignInResponse;
 import com.hsbc.firebase.auth.firebaseauth.service.UserManageService;
 
 @RestController
@@ -28,10 +29,13 @@ public class FirebaseAuthController {
 	}
 	
 	@PostMapping(path ="/signInWithEmailAndPassword")
-	public UserRecord signInWithEmailAndPassword(@RequestBody SignInInfo signInInfo) {		
+	public SignInResponse signInWithEmailAndPassword(@RequestBody SignInInfo signInInfo) {	
+		
 		System.out.println("Email Id ::"+signInInfo.getEmail());
 		System.out.println("Password ::"+signInInfo.getPassword());	
-		return userManageService.callSignInWithEmailAndPassword(signInInfo.getEmail(),signInInfo.getPassword());
+		System.out.println("returnSecureToken ::"+signInInfo.isReturnSecureToken());
+		
+		return userManageService.callSignInWithEmailAndPassword(signInInfo);
 	}
 	
 	@GetMapping("/importUsersWithoutPassword")
